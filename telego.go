@@ -1,7 +1,11 @@
 package telego
 
-type Telego struct{}
+type Telego struct {
+	Api *api
+}
 
-func NewTelego() *Telego {
-	return &Telego{}
+func NewTelego(token string) *Telego {
+	return &Telego{
+		Api: newapi(token),
+	}
 }
