@@ -19,3 +19,15 @@ func newApi(token string, apiendpoint string) *api {
 		apiclient: newHttpClient(endpoint, header),
 	}
 }
+
+func (a *api) GetMe() (*type_GetMe, error) {
+	getme := &type_GetMe{}
+
+	a.apiclient.setMethod("getMe")
+	err := a.apiclient.do(getme)
+	if err != nil {
+		return nil, err
+	}
+
+	return getme, nil
+}

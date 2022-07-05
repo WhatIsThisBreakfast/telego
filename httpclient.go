@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type decoder interface {
+	decode([]byte) error
+}
+
 //lint:ignore U1000 Ignore unused function temporarily for debugging
 type httpClient struct {
 	header   http.Header
@@ -38,28 +42,28 @@ func (r *httpClient) clear() {
 	r.params = url.Values{}
 }
 
-func (r *httpClient) do() ([]byte, error) {
+func (r *httpClient) do(d decoder) error {
 	defer r.clear()
 
 	requrl := strings.Join([]string{r.endpoint, r.method}, "")
 	reqparams := strings.NewReader(r.params.Encode())
 	req, err := http.NewRequest("POST", requrl, reqparams)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	req.Header = r.header
 	resp, err := r.client.Do(req)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return data, nil
+	return d.decode(data)
 }
