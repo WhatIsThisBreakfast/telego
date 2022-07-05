@@ -1,11 +1,21 @@
 package telego
 
+import (
+	"fmt"
+	"net/http"
+)
+
 type api struct {
-	token string
+	apiclient *httpClient
 }
 
-func newapi(token string) *api {
+func newApi(token string, apiendpoint string) *api {
+	endpoint := fmt.Sprintf(apiendpoint, token)
+
+	header := make(http.Header)
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
+
 	return &api{
-		token: token,
+		apiclient: newHttpClient(endpoint, header),
 	}
 }

@@ -6,6 +6,6 @@ type Telego struct {
 
 func NewTelego(token string) *Telego {
 	return &Telego{
-		Api: newapi(token),
+		Api: newApi(token, c_apiendpoint),
 	}
 }
