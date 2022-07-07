@@ -16,8 +16,8 @@ func newApi(token string, apiendpoint string) *api {
 	}
 }
 
-func (a *api) GetMe() (*type_GetMe, error) {
-	getme := &type_GetMe{}
+func (a *api) GetMe() (*TypeGetMe, error) {
+	getme := &TypeGetMe{}
 
 	a.apiclient.setMethod("getMe")
 	err := a.apiclient.doPost(getme)

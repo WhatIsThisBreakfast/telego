@@ -6,14 +6,14 @@ import (
 )
 
 //lint:ignore U1000 Ignore unused function temporarily for debugging
-type type_ApiResponse struct {
+type TypeApiResponse struct {
 	Ok          bool            `json:"ok"`
 	Result      json.RawMessage `json:"result,omitempty"`
 	ErrorCode   int             `json:"error_code,omitempty"`
 	Description string          `json:"description,omitempty"`
 }
 
-func (t *type_ApiResponse) decode(data []byte) error {
+func (t *TypeApiResponse) decode(data []byte) error {
 	err := json.Unmarshal(data, t)
 	if err != nil {
 		return err
@@ -22,15 +22,15 @@ func (t *type_ApiResponse) decode(data []byte) error {
 	return nil
 }
 
-func (t *type_ApiResponse) isApiError() bool {
+func (t *TypeApiResponse) isApiError() bool {
 	return t.ErrorCode != 0
 }
 
-func (t *type_ApiResponse) generateApiError() error {
+func (t *TypeApiResponse) generateApiError() error {
 	return fmt.Errorf("APIERROR{ error_code: %d, description: %s}", t.ErrorCode, t.Description)
 }
 
-type type_GetMe struct {
+type TypeGetMe struct {
 	Id                     int    `json:"id"`
 	IsBot                  bool   `json:"is_bot"`
 	FirstName              string `json:"first_name"`
@@ -40,8 +40,8 @@ type type_GetMe struct {
 	SupportsInlineQueries  bool   `json:"supports_inline_queries"`
 }
 
-func (t *type_GetMe) decode(data []byte) error {
-	resp := type_ApiResponse{}
+func (t *TypeGetMe) decode(data []byte) error {
+	resp := TypeApiResponse{}
 	resp.decode(data)
 
 	if resp.isApiError() {
