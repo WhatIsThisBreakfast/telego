@@ -13,16 +13,14 @@ type decoder interface {
 
 //lint:ignore U1000 Ignore unused function temporarily for debugging
 type httpClient struct {
-	header   http.Header
 	endpoint string
 	method   string
 	params   url.Values
 	client   *http.Client
 }
 
-func newHttpClient(endpoint string, header http.Header) *httpClient {
+func newHttpClient(endpoint string) *httpClient {
 	return &httpClient{
-		header:   header,
 		endpoint: endpoint,
 		client:   http.DefaultClient,
 		params:   url.Values{},
@@ -42,7 +40,7 @@ func (r *httpClient) clear() {
 	r.params = url.Values{}
 }
 
-func (r *httpClient) do(d decoder) error {
+func (r *httpClient) doPost(d decoder) error {
 	defer r.clear()
 
 	requrl := strings.Join([]string{r.endpoint, r.method}, "")
@@ -52,7 +50,7 @@ func (r *httpClient) do(d decoder) error {
 		return err
 	}
 
-	req.Header = r.header
+	req.Header.Set("Content-Type", c_appheader)
 	resp, err := r.client.Do(req)
 
 	if err != nil {
