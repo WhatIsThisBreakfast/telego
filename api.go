@@ -1,7 +1,12 @@
 package telego
 
 import (
+	"context"
 	"fmt"
+)
+
+const (
+	KeyApi = ModuleKey("telego.api")
 )
 
 type api struct {
@@ -14,6 +19,10 @@ func newApi(token string, apiendpoint string) *api {
 	return &api{
 		apiclient: newHttpClient(endpoint),
 	}
+}
+
+func (a *api) InitModule(ctx context.Context) (context.Context, error) {
+	return context.WithValue(ctx, KeyApi, a), nil
 }
 
 func (a *api) GetMe() (*TypeGetMe, error) {

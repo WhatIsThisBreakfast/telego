@@ -27,7 +27,7 @@ func (t *TypeApiResponse) isApiError() bool {
 }
 
 func (t *TypeApiResponse) generateApiError() error {
-	return fmt.Errorf("APIERROR{ error_code: %d, description: %s}", t.ErrorCode, t.Description)
+	return fmt.Errorf("APIERROR{ http_code: %d, description: %s}", t.ErrorCode, t.Description)
 }
 
 type TypeGetMe struct {
