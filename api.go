@@ -9,6 +9,10 @@ const (
 	KeyApi = ModuleKey("telego.api")
 )
 
+func GetApiModule(ctx context.Context) *api {
+	return ctx.Value(KeyApi).(*api)
+}
+
 type api struct {
 	apiclient *httpClient
 }
