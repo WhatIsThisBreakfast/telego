@@ -6,27 +6,38 @@ import (
 )
 
 const (
-	KeyApi = ModuleKey("telego.api")
+	KeyApi = ContextKey("telego.api")
 )
 
-func GetApiModule(ctx context.Context) *api {
+func GetApiFromCtx(ctx context.Context) *api {
 	return ctx.Value(KeyApi).(*api)
 }
 
 type api struct {
 	apiclient *httpClient
+	ctx       context.Context
 }
 
-func newApi(token string, apiendpoint string) *api {
-	endpoint := fmt.Sprintf(apiendpoint, token)
+func newApi(token string) *api {
+	endpoint := fmt.Sprintf(c_apiendpoint, token)
 
 	return &api{
 		apiclient: newHttpClient(endpoint),
 	}
 }
 
-func (a *api) InitModule(ctx context.Context) (context.Context, error) {
-	return context.WithValue(ctx, KeyApi, a), nil
+func (a *api) middleware(ctx context.Context) (context.Context, MwFunc) {
+	apictx := context.WithValue(ctx, KeyApi, a)
+
+	return apictx,
+		func(ctx context.Context) (context.Context, error) {
+			GetApiFromCtx(ctx).updateContext(ctx)
+			return ctx, nil
+		}
+}
+
+func (a *api) updateContext(ctx context.Context) {
+	a.ctx = ctx
 }
 
 func (a *api) GetMe() (*TypeGetMe, error) {

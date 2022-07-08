@@ -2,55 +2,37 @@ package telego
 
 import (
 	"context"
-	"fmt"
 )
+
+type ContextKey string
 
 //lint:ignore U1000 Ignore unused function temporarily for debugging
 type Telego struct {
 	token   string
 	ctx     context.Context
-	modules []TelegoModule
+	mwchain *mwChain
 }
 
 func NewTelego(token string) *Telego {
 	return &Telego{
-		token: token,
+		token:   token,
+		mwchain: newMwChain(),
 	}
 }
 
-func (t *Telego) AddModule(module TelegoModule) {
-	t.modules = append(t.modules, module)
-}
-
-func (t *Telego) addStandartModules() {
-	t.AddModule(newApi(t.token, c_apiendpoint))
-}
-
-func (t *Telego) init() error {
-	t.addStandartModules()
-
-	if err := t.initContext(); err != nil {
-		return err
+func (t *Telego) Middleware(mw IMiddleware) {
+	newctx, mwfunc := mw.middleware(t.ctx)
+	if newctx != nil {
+		t.ctx = newctx
 	}
 
-	return nil
+	t.mwchain.addToChain(mwfunc)
 }
 
-func (t *Telego) initContext() error {
-	ctx := context.Background()
-	var err error
+func (t *Telego) initMiddlware() {
+	t.Middleware(newApi(t.token))
+}
 
-	//load modules
-	for _, module := range t.modules {
-		ctx, err = module.InitModule(ctx)
-		if err != nil {
-			return err
-		}
-
-		if ctx == nil {
-			return fmt.Errorf("INIT MODULES ERROR{ description: ctx = nil }")
-		}
-	}
-
-	return nil
+func (t *Telego) init() {
+	t.initMiddlware()
 }
