@@ -32,11 +32,15 @@ func (c *mwChain) exec(ctx context.Context) (context.Context, error) {
 }
 
 func (c *mwChain) addToChain(mwfunc MwFunc) {
-	if c.next == nil {
+	switch {
+	case c.mwfunc == nil:
+		c.mwfunc = mwfunc
+	case c.next == nil:
 		c.next = &mwChain{
 			mwfunc: mwfunc,
 		}
-	} else {
+	default:
 		c.next.addToChain(mwfunc)
 	}
+
 }
