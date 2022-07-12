@@ -5,7 +5,8 @@ import "context"
 type MwFunc func(ctx context.Context) (context.Context, error)
 
 type IMiddleware interface {
-	middleware(context.Context) (context.Context, MwFunc)
+	middleware(context.Context) (context.Context, error)
+	init(context.Context) (context.Context, error)
 }
 
 //lint:ignore U1000 Ignore unused function temporarily for debugging

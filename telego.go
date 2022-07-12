@@ -17,16 +17,22 @@ func NewTelego(token string) *Telego {
 	return &Telego{
 		token:   token,
 		mwchain: newMwChain(),
+		ctx:     context.Background(),
 	}
 }
 
 func (t *Telego) Middleware(mw IMiddleware) {
-	newctx, mwfunc := mw.middleware(t.ctx)
+	newctx, _ := mw.init(t.ctx)
+
+	//TODO: add err output after adding log
+	//if err != nil {
+	//}
+
 	if newctx != nil {
 		t.ctx = newctx
 	}
 
-	t.mwchain.addToChain(mwfunc)
+	t.mwchain.addToChain(mw.middleware)
 }
 
 func (t *Telego) initMiddlware() {

@@ -26,14 +26,18 @@ func newApi(token string) *api {
 	}
 }
 
-func (a *api) middleware(ctx context.Context) (context.Context, MwFunc) {
+// middleware init
+func (a *api) init(ctx context.Context) (context.Context, error) {
 	apictx := context.WithValue(ctx, KeyApi, a)
 
-	return apictx,
-		func(ctx context.Context) (context.Context, error) {
-			GetApiFromCtx(ctx).updateContext(ctx)
-			return ctx, nil
-		}
+	return apictx, nil
+}
+
+// middleware func
+func (a *api) middleware(ctx context.Context) (context.Context, error) {
+	GetApiFromCtx(ctx).updateContext(ctx)
+
+	return ctx, nil
 }
 
 func (a *api) updateContext(ctx context.Context) {
