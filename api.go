@@ -35,13 +35,9 @@ func (a *api) init(ctx context.Context) (context.Context, error) {
 
 // middleware func
 func (a *api) middleware(ctx context.Context) (context.Context, error) {
-	GetApiFromCtx(ctx).updateContext(ctx)
+	a.ctx = ctx
 
 	return ctx, nil
-}
-
-func (a *api) updateContext(ctx context.Context) {
-	a.ctx = ctx
 }
 
 func (a *api) GetMe() (*TypeGetMe, error) {
