@@ -1,4 +1,4 @@
-package telego
+package tggo
 
 import (
 	"context"
@@ -7,21 +7,21 @@ import (
 type ContextKey string
 
 //lint:ignore U1000 Ignore unused function temporarily for debugging
-type Telego struct {
+type Tggo struct {
 	token   string
 	ctx     context.Context
 	mwchain *mwChain
 }
 
-func NewTelego(token string) *Telego {
-	return &Telego{
+func NewTggo(token string) *Tggo {
+	return &Tggo{
 		token:   token,
 		mwchain: newMwChain(),
 		ctx:     context.Background(),
 	}
 }
 
-func (t *Telego) Middleware(mw IMiddleware) {
+func (t *Tggo) Middleware(mw IMiddleware) {
 	newctx, _ := mw.init(t.ctx)
 
 	//TODO: add err output after adding log
@@ -35,10 +35,10 @@ func (t *Telego) Middleware(mw IMiddleware) {
 	t.mwchain.addToChain(mw.middleware)
 }
 
-func (t *Telego) initMiddlware() {
+func (t *Tggo) initMiddlware() {
 	t.Middleware(newApi(t.token))
 }
 
-func (t *Telego) init() {
+func (t *Tggo) init() {
 	t.initMiddlware()
 }

@@ -1,4 +1,4 @@
-package telego
+package tggo
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	tmwkey1 = ContextKey("telego.test.tmw1")
-	tmwkey2 = ContextKey("telego.test.tmw2")
-	tmwkey3 = ContextKey("telego.test.tmw3")
+	tmwkey1 = ContextKey("tggo.test.tmw1")
+	tmwkey2 = ContextKey("tggo.test.tmw2")
+	tmwkey3 = ContextKey("tggo.test.tmw3")
 )
 
 //lint:ignore U1000 Ignore unused function temporarily for debugging
@@ -31,7 +31,7 @@ func (tmw *testMwStruct) middleware(ctx context.Context) (context.Context, error
 	return ctx, nil
 }
 
-func TestTelegoMiddleware(t *testing.T) {
+func TestTggoMiddleware(t *testing.T) {
 	tmw1 := &testMwStruct{
 		key:     tmwkey1,
 		counter: 4,

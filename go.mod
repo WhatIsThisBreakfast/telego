@@ -1,4 +1,4 @@
-module github.com/WhatIsThisBreakfast/telego
+module github.com/WhatIsThisBreakfast/tggo
 
 go 1.18
 

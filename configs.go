@@ -1,4 +1,4 @@
-package telego
+package tggo
 
 const (
 	c_apiendpoint = "https://api.telegram.org/bot%s/"

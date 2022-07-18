@@ -1,4 +1,4 @@
-package telego
+package tggo
 
 import (
 	"os"
@@ -10,10 +10,10 @@ const (
 )
 
 var (
-	tlg *Telego
+	tlg *Tggo
 )
 
 func TestMain(m *testing.M) {
-	tlg = NewTelego(token)
+	tlg = NewTggo(token)
 	os.Exit(m.Run())
 }

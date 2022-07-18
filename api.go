@@ -1,4 +1,4 @@
-package telego
+package tggo
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	KeyApi = ContextKey("telego.api")
+	KeyApi = ContextKey("tggo.api")
 )
 
 func GetApiFromCtx(ctx context.Context) *api {
